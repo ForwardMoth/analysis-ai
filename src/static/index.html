@@ -22,6 +22,7 @@
 <symbol id="i-chat" viewBox="0 0 24 24"><path d="M5 5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-5 4v-4H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></symbol>
 <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.500-6 8-6s8 2 8 6"/></symbol>
 <symbol id="i-wand" viewBox="0 0 24 24"><path d="m5 19 10-10m-2-2 4 4M7 4v3M5.500 5.500h3M19 14v3M17.500 15.500h3"/></symbol>
+<symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
 <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.500-4.500"/></symbol>
 </defs></svg>
 <main>
@@ -144,7 +145,8 @@
       <div class="rep" id="rtop">
         <aside class="rside" id="rside">
           <input type="search" id="rq" placeholder="Поиск по разбору" aria-label="Поиск по разбору">
-          <nav class="rlist" id="rlist" aria-label="Разделы разбора"></nav>
+          <button type="button" class="rtoggle" id="rtoggle" aria-expanded="false" aria-controls="rlist"><span id="rcur"></span><svg class="ico"><use href="#i-chevron"/></svg></button>
+          <nav class="rnav" id="rlist" aria-label="Разделы разбора"></nav>
         </aside>
         <div class="rmain"><div class="md" id="amd"></div><div class="rpager" id="rpager"></div></div>
       </div>
