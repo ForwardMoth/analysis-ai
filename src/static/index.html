@@ -123,7 +123,12 @@
       <p>AI прочитает расшифровку и подготовит структурированный разбор по вашему промпту. Если в записи есть экран, он сам найдёт практические задания (код, SQL, схемы), посмотрит на кадры экрана, сопоставит их с голосом и включит разбор каждого задания в общий отчёт. Это занимает несколько минут, результат сохранится в истории.</p></div></div>
     <div class="step"><span class="lbl">1. Чем анализировать</span>
       <div class="pcards" id="aprov"></div></div>
-    <div class="step"><span class="lbl">2. Роль кандидата<span class="hint">необязательно</span></span>
+    <div class="step"><span class="lbl">2. Тип интервью</span>
+      <div class="seg" id="akind" role="radiogroup" aria-label="Тип интервью">
+        <label><input type="radio" name="akind" value="technical" checked><span>Техническое</span></label>
+        <label><input type="radio" name="akind" value="fit"><span>Финальное / фит</span></label></div>
+      <p class="muted" id="akindhint"></p></div>
+    <div class="step"><span class="lbl">3. Роль кандидата<span class="hint">необязательно</span></span>
       <input type="hidden" id="arole" value="">
       <div class="rpick">
         <div class="rlist-wrap">
@@ -132,11 +137,11 @@
         </div>
         <aside class="rview" id="rview" aria-live="polite"></aside>
       </div></div>
-    <div class="step"><span class="lbl">3. Модель<span class="hint">необязательно</span></span>
+    <div class="step"><span class="lbl">4. Модель<span class="hint">необязательно</span></span>
       <div class="mcards" id="mcards" role="radiogroup" aria-label="Модель"></div>
       <input id="amodel" class="model-input hidden" placeholder="Название модели, например gpt-5" aria-label="Название модели" autocomplete="off"></div>
     <div class="runrow"><button class="go big" id="arun"><svg class="ico"><use href="#i-spark"/></svg>Проанализировать</button>
-      <span class="muted">Используется <code>prompts/analyze-interview.md</code> и ваша подписка в установленном CLI.</span></div>
+      <span class="muted">Используется <code id="aprompt">prompts/analyze-interview.md</code> и ваша подписка в установленном CLI.</span></div>
     <div id="astat" class="muted"></div>
     <div class="aiprog hidden" id="aprog"><i></i></div>
     <div class="muted" id="apct"></div>

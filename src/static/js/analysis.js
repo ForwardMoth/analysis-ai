@@ -41,6 +41,22 @@ $('mcards').onclick = e => {
 $('aprov').onchange = () => { modelChoice = ''; $('amodel').value = ''; renderModels(); };
 const provider = () => (document.querySelector('input[name=aprov]:checked') || {}).value || 'claude';
 
+const KINDS = {
+  technical: ['analyze-interview.md', 'Вопросы и ответы по технологиям, пробелы в знаниях, материалы для изучения.'],
+  fit: ['analyze-fit.md', 'Поведенческие вопросы, опыт, мотивация, софт-скиллы; технические вопросы и задания тоже разбираются.'],
+};
+const kind = () => (document.querySelector('input[name=akind]:checked') || {}).value || 'technical';
+function applyKind(value) {
+  const radio = document.querySelector(`input[name=akind][value=${value}]`);
+  if (!radio) return;
+  radio.checked = true;
+  $('aprompt').textContent = 'prompts/' + KINDS[value][0];
+  $('akindhint').textContent = KINDS[value][1];
+  lsSet('kind', value);
+}
+$('akind').onchange = () => applyKind(kind());
+applyKind(lsGet('kind') || 'technical');
+
 let roleList = [];
 const AUTO_TEXT = 'Модель сама поймёт по записи, кого вы собеседовали, и назовёт роль в начале отчёта. Подходит, если роль заранее не известна.';
 const ROLE_LABELS = {'Оценивай': 'На что смотрим', 'Практика': 'Практика'};
@@ -95,7 +111,7 @@ function renderHistory() {
   $('abadge').classList.toggle('hidden', !analyses.length);
   $('ahist').innerHTML = analyses.slice().reverse().map(a =>
     `<button class="chip" data-a="${a.id}" data-p="${a.provider}">${fmtDT(a.created)} · ${PROVIDER_NAMES[a.provider]}` +
-    `${a.model ? ' ' + esc(a.model) : ''}${a.role ? ' · ' + esc(a.role) : ''}${(a.tasks || []).length ? ' · заданий: ' + a.tasks.length : ''}</button>`
+    `${a.model ? ' ' + esc(a.model) : ''}${a.kind === 'fit' ? ' · фит' : ''}${a.role ? ' · ' + esc(a.role) : ''}${(a.tasks || []).length ? ' · заданий: ' + a.tasks.length : ''}</button>`
   ).join('');
 }
 
@@ -156,7 +172,7 @@ $('arun').onclick = async () => {
   $('astat').textContent = 'Отправляю…';
 
   const response = await api(`/api/transcripts/${transcriptId}/analyze`,
-    {provider: providerName, model: $('amodel').value.trim(), role: $('arole').value});
+    {provider: providerName, model: $('amodel').value.trim(), role: $('arole').value, kind: kind()});
   if (!response.ok) return showError(await response.text());
   const {id} = await response.json();
 

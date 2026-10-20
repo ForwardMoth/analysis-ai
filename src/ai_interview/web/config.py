@@ -16,6 +16,8 @@ LOGS = DATA / "logs"
 WORK = DATA / "work"  # per-file checkpoints, removed once a job finishes
 
 PROMPT_FILE = ROOT / "prompts" / "analyze-interview.md"
+FIT_PROMPT_FILE = ROOT / "prompts" / "analyze-fit.md"
+INTERVIEW_KINDS = {"technical": PROMPT_FILE, "fit": FIT_PROMPT_FILE}
 PRACTICE_PROMPT_FILE = ROOT / "prompts" / "analyze-practice.md"
 DETECT_PROMPT_FILE = ROOT / "prompts" / "detect-tasks.md"
 ROLES_DIR = ROOT / "prompts" / "roles"

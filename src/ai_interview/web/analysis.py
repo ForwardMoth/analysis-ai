@@ -37,10 +37,10 @@ class AnalysisService:
         self.practice = practice
         self._states: dict[str, AnalysisState] = {}
 
-    def start(self, tid: str, provider: str, model: str, role: str) -> str:
+    def start(self, tid: str, provider: str, model: str, role: str, kind: str = "technical") -> str:
         aid = uuid.uuid4().hex[:12]
         self._states[f"{tid}/{aid}"] = AnalysisState()
-        threading.Thread(target=self._run, args=(tid, aid, provider, model, role), daemon=True).start()
+        threading.Thread(target=self._run, args=(tid, aid, provider, model, role, kind), daemon=True).start()
         return aid
 
     def state(self, tid: str, aid: str) -> AnalysisState | None:
@@ -51,15 +51,15 @@ class AnalysisService:
 
     # --- worker -------------------------------------------------------------
 
-    def _run(self, tid: str, aid: str, provider: str, model: str, role: str) -> None:
+    def _run(self, tid: str, aid: str, provider: str, model: str, role: str, kind: str) -> None:
         state = self._states[f"{tid}/{aid}"]
         out_file = self.result_file(tid, aid)
         try:
             tasks = self._analyze_tasks(tid, state, provider, model, role)
             state.stage = "Собираю итоговый разбор собеседования…"
-            text = self._ask_llm(tid, provider, model, role, out_file, self._practice_block(tasks))
+            text = self._ask_llm(tid, provider, model, role, kind, out_file, self._practice_block(tasks))
             out_file.write_text(text + "\n", encoding="utf-8")
-            entry = {"id": aid, "provider": provider, "model": model, "role": role, "created": now_iso(),
+            entry = {"id": aid, "provider": provider, "model": model, "role": role, "kind": kind, "created": now_iso(),
                      "seconds": int(time.monotonic() - state.started),
                      "tasks": [{k: task.get(k, "") for k in ("start", "end", "kind", "verdict", "title")}
                                for task in tasks if "text" in task]}
@@ -108,12 +108,13 @@ class AnalysisService:
         return ("\n\n---\n\nРАЗБОР ПРАКТИЧЕСКИХ ЗАДАНИЙ. Каждое задание уже разобрано отдельным проходом "
                 "по кадрам экрана и голосу:\n\n" + "\n\n".join(parts))
 
-    def _ask_llm(self, tid: str, provider: str, model: str, role: str, out_file: Path, practice: str) -> str:
-        return cli.ask(provider, model, self._build_prompt(tid, role, practice), config.WORK / "analysis",
+    def _ask_llm(self, tid: str, provider: str, model: str, role: str, kind: str, out_file: Path,
+                 practice: str) -> str:
+        return cli.ask(provider, model, self._build_prompt(tid, role, kind, practice), config.WORK / "analysis",
                        out_file, tools=ANALYSIS_TOOLS)
 
-    def _build_prompt(self, tid: str, role: str, practice: str = "") -> str:
+    def _build_prompt(self, tid: str, role: str, kind: str, practice: str = "") -> str:
         meta = self.store.load(tid)
         transcript = self.store.named_transcript(tid)
-        prompt = config.PROMPT_FILE.read_text(encoding="utf-8")
+        prompt = config.INTERVIEW_KINDS[kind].read_text(encoding="utf-8")
         return f"{prompt}\n\n---\n\nТРАНСКРИПЦИЯ ({meta['name']}):\n\n{transcript}{practice}{self.roles.prompt_block(role)}"

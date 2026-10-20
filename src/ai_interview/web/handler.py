@@ -209,15 +209,19 @@ class Handler(BaseHTTPRequestHandler):
         provider = body.get("provider")
         model = str(body.get("model", "")).strip()
         role = str(body.get("role", ""))
+        kind = str(body.get("kind", "technical"))
         if provider not in cli.PROVIDER_BINARIES or not MODEL_RE.fullmatch(model):
             raise BadRequest("bad provider or model")
         if role and role not in self.ctx.roles.names():
             raise BadRequest("Роль не найдена в prompts/roles/")
         if not shutil.which(cli.PROVIDER_BINARIES[provider]):
             raise BadRequest("Не найден CLI (claude / codex)")
-        if not config.PROMPT_FILE.is_file():
-            raise BadRequest("Не найден prompts/analyze-interview.md")
-        self.json(200, {"id": self.ctx.analyses.start(tid, provider, model, role)})
+        if kind not in config.INTERVIEW_KINDS:
+            raise BadRequest("Неизвестный тип интервью")
+        prompt_file = config.INTERVIEW_KINDS[kind]
+        if not prompt_file.is_file():
+            raise BadRequest(f"Не найден prompts/{prompt_file.name}")
+        self.json(200, {"id": self.ctx.analyses.start(tid, provider, model, role, kind)})
 
     def post_job(self, raw_query: str) -> None:
         query = {k: v[0] for k, v in parse_qs(raw_query).items()}
