@@ -1,0 +1,81 @@
+/* --- ai analysis --- */
+.aihero{display:flex;gap:16px;align-items:flex-start;margin:28px 0 24px}
+.aihero .orb{width:48px;height:48px;border-radius:14px;background:var(--wash);color:var(--play);display:grid;place-items:center;flex:none}
+.aihero .orb .ico{width:26px;height:26px}
+.aihero h3{margin:0 0 4px;font-size:22px;letter-spacing:-.02em}.aihero p{margin:0;color:var(--muted);max-width:40em}
+.step{margin:0 0 22px}.step>label,.step>.lbl{display:block;font-weight:600;font-size:15px;margin-bottom:8px}
+.step .hint{color:var(--muted);font-size:13px;font-weight:400;margin-left:6px}
+.pcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.pcard{position:relative;display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer}
+.pcard:hover{background:var(--wash)}.pcard input{position:absolute;opacity:0}
+.pcard:has(input:checked){border-color:var(--play);box-shadow:0 0 0 1px var(--play);background:var(--wash)}
+.pcard:has(input:focus-visible){outline:2px solid var(--play);outline-offset:3px}
+.pcard:has(input:disabled){opacity:.5;cursor:not-allowed}
+.pcard .ico{width:24px;height:24px;color:var(--play)}.pcard b{display:block;font-weight:600}.pcard small{color:var(--muted);font-size:13px}
+.runrow{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:8px}
+button.go.big{padding:13px 26px;font-size:16px}
+.aiprog{height:6px;border-radius:2px;background:var(--wash);overflow:hidden;margin-top:14px}
+.aiprog i{display:block;height:100%;width:0;background:var(--play);transition:width .6s ease}
+@keyframes slide{0%{margin-left:-35%}100%{margin-left:100%}}
+
+.aires{margin-top:28px;padding-top:8px;border-top:1px solid var(--line)}
+.hist{margin-top:28px}.hist h4{margin:0 0 8px;font-size:15px}
+/* --- role picker: searchable list with a description panel --- */
+.rpick{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:16px;align-items:start}
+.rsearch{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:0 12px;margin-bottom:8px}
+.rsearch:focus-within{border-color:var(--play);box-shadow:0 0 0 1px var(--play)}
+.rsearch .ico{color:var(--muted)}
+.rsearch input{flex:1;min-width:0;font:inherit;color:inherit;background:transparent;border:0;padding:10px 0;outline:0}
+.rlist{max-height:344px;overflow:auto;border:1px solid var(--line);border-radius:12px}
+.ritem{display:flex;gap:12px;align-items:center;width:100%;text-align:left;font:inherit;color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--line);padding:11px 14px;cursor:pointer}
+.ritem:last-child{border-bottom:0}
+.ritem .ico{width:20px;height:20px;color:var(--muted)}
+.ritem span{min-width:0}.ritem b{display:block;font-weight:600}
+.ritem small{display:block;color:var(--muted);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ritem:hover{background:var(--wash)}
+.ritem:focus-visible{outline-offset:-3px}
+.ritem[aria-checked=true]{background:var(--wash);box-shadow:inset 3px 0 0 var(--play)}
+.ritem[aria-checked=true] .ico{color:var(--play)}
+.rempty{margin:0;padding:14px}
+.rview{background:var(--wash);border-radius:12px;padding:18px 20px;min-height:120px}
+.rview h4{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:17px;letter-spacing:-.01em}
+.rview h4 .ico{color:var(--play)}
+.rview p{margin:0}.rview dl{margin:0 0 12px}
+.rview dt{color:var(--muted);font-size:13px;margin-top:10px}.rview dt:first-child{margin-top:0}
+.rview dd{margin:2px 0 0}
+.rview code{font-size:12px}
+@media(max-width:760px){.rpick{grid-template-columns:1fr}.rlist{max-height:260px}}
+
+/* --- model picker --- */
+.mcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.mcard{font:inherit;color:var(--ink);text-align:left;background:transparent;border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.mcard b{display:block;font-weight:600}.mcard small{display:block;color:var(--muted);font-size:13px;line-height:1.35;margin-top:2px}
+.mcard:hover{background:var(--wash)}
+.mcard[aria-checked=true]{border-color:var(--play);box-shadow:0 0 0 1px var(--play);background:var(--wash)}
+
+.arow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+select{font:inherit;color:inherit;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.model-input{display:block;width:100%;max-width:420px;margin-top:10px;font:inherit;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+.model-input::placeholder{color:var(--muted)}
+.model-input:focus{outline:0;border-color:var(--play);box-shadow:0 0 0 1px var(--play)}
+#astat{margin-top:12px}
+#apct{margin-top:6px;font-size:13px}
+
+/* --- paged report --- */
+.rep{display:grid;grid-template-columns:260px minmax(0,1fr);gap:28px;align-items:start;scroll-margin-top:12px}
+.rside{position:sticky;top:12px;max-height:calc(100vh - 24px);display:flex;flex-direction:column;gap:10px}
+.rside input{width:100%;box-sizing:border-box}
+.rlist{overflow:auto;display:flex;flex-direction:column;gap:2px;padding-right:4px}
+.rgroup{margin:12px 0 4px;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.rlink{display:flex;justify-content:space-between;gap:8px;text-align:left;font:inherit;font-size:14px;line-height:1.35;color:var(--ink);background:none;border:0;border-radius:8px;padding:7px 10px;cursor:pointer}
+.rlink.sub{padding-left:18px}.rlink:hover{background:var(--wash)}
+.rlink.on{background:var(--wash);color:var(--play);font-weight:600}
+.rcount{flex:none;font-size:12px;color:var(--muted);font-weight:400}
+.rempty{color:var(--muted);font-size:14px;padding:8px 10px}
+.rpager{display:flex;justify-content:space-between;gap:12px;margin-top:28px;padding-top:16px;border-top:1px solid var(--line)}
+.rpager .btn{max-width:48%;text-align:left}
+.md mark{background:#ffe27a;color:inherit;border-radius:3px;padding:0 1px}
+@media (max-width:760px){
+  .rep{grid-template-columns:1fr;gap:16px}
+  .rside{position:static;max-height:none}.rlist{max-height:220px}
+}

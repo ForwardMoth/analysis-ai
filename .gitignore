@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+.DS_Store
+.idea/
+data/
+.venv-win/
+Thumbs.db
+desktop.ini

@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Interview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,500&family=Schibsted+Grotesk:wght@400;500;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/base.css">
+<link rel="stylesheet" href="/static/css/upload.css">
+<link rel="stylesheet" href="/static/css/transcript.css">
+<link rel="stylesheet" href="/static/css/analysis.css">
+<link rel="stylesheet" href="/static/css/markdown.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></symbol>
+<symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></symbol>
+<symbol id="i-json" viewBox="0 0 24 24"><path d="M9 4C7 4 7 5.5 7 7v2c0 1.5-1 3-3 3 2 0 3 1.5 3 3v2c0 1.500 0 3 2 3M15 4c2 0 2 1.500 2 3v2c0 1.500 1 3 3 3-2 0-3 1.500-3 3v2c0 1.500 0 3-2 3"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.800 2.800 0 0 0-4-4L4 16z"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.900 5.100L19 10l-5.100 1.900L12 17l-1.900-5.100L5 10l5.100-1.900zM19 16l.8 2.200L22 19l-2.200.8L19 22l-.8-2.200L16 19l2.200-.8z"/></symbol>
+<symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4M9 13v2M15 13v2"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M5 5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-5 4v-4H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.500-6 8-6s8 2 8 6"/></symbol>
+<symbol id="i-wand" viewBox="0 0 24 24"><path d="m5 19 10-10m-2-2 4 4M7 4v3M5.500 5.500h3M19 14v3M17.500 15.500h3"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.500-4.500"/></symbol>
+</defs></svg>
+<main>
+<a class="mark" href="/" onclick="location.reload();return false" title="К списку">AI Interview</a>
+
+<section id="intake">
+  <h1>Запись собеседования в текст</h1>
+  <p class="lead">Загрузите видео или аудио и получите диалог с таймкодами. Всё считается на вашем компьютере.</p>
+
+  <div class="dialog" id="dialog">
+    <div class="dhead"><h2 id="dtitle">Загрузка записи</h2><button class="x" id="close" aria-label="Закрыть и начать заново">×</button></div>
+
+    <div id="pick" class="drop">
+      <div class="up" aria-hidden="true"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V5M7.5 9.5 12 5l4.5 4.5M5 15v3.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V15"/></svg></div>
+      <h3>Перетащите файл сюда</h3>
+      <p>Видео или аудио: mp4, mov, mkv, m4a, mp3, wav. Файл остаётся на этом компьютере.</p>
+      <button class="go" id="choose" type="button">Выбрать файл</button>
+    </div>
+    <input id="file" type="file" accept="video/*,audio/*,.mkv" class="hidden">
+
+    <div id="chosen" class="hidden">
+      <div class="dbody">
+        <div class="file">
+          <div class="thumb" id="thumb"><svg id="thumbIcon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity=".7"><path d="M9 18V6l10-2v12M9 18a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm10-2a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/></svg><span class="dur hidden" id="dur"></span></div>
+          <div class="finfo">
+            <b id="fname"></b>
+            <span id="fmeta"></span>
+            <button class="link" id="replace" type="button">Выбрать другой файл</button>
+            <div class="prog hidden" id="prog">
+              <div class="row"><b class="state" id="st"></b><span id="pct"></span></div>
+              <div class="bar"><i id="bar"></i></div>
+              <div class="det" id="det"></div>
+            </div>
+          </div>
+        </div>
+        <details id="logbox" class="hidden"><summary>Подробности</summary><pre class="log" id="log"></pre></details>
+
+        <details class="adv" id="settings"><summary>Параметры <span>(необязательно, по умолчанию всё определяется само)</span></summary>
+        <dl class="set">
+          <div><dt>Язык записи</dt><dd><div class="seg" role="radiogroup" aria-label="Язык записи">
+            <label><input type="radio" name="lang" value="auto" checked><span>Определить</span></label>
+            <label><input type="radio" name="lang" value="ru"><span>Русский</span></label>
+            <label><input type="radio" name="lang" value="en"><span>English</span></label></div></dd></div>
+          <div><dt>Говорящих<small>Пусто — определить автоматически. Если знаете точно, укажите число</small></dt><dd><input id="speakers" type="number" min="1" max="10" placeholder="Авто" aria-label="Число говорящих"></dd></div>
+          <div><dt>Точность<small>Выше точность — дольше ждать</small></dt><dd><div class="seg" role="radiogroup" aria-label="Модель">
+            <label><input type="radio" name="model" value="small" checked><span>Быстро</span></label>
+            <label><input type="radio" name="model" value="medium"><span>Точнее</span></label>
+            <label><input type="radio" name="model" value="large-v3"><span>Максимум</span></label></div></dd></div>
+          <div><dt>Говорящие по голосам</dt><dd><label class="sw"><input type="checkbox" id="diarize" checked> Разделять реплики</label></dd></div>
+        </dl></details>
+      </div>
+      <div class="dfoot" id="dfoot"><small>Расшифровка может занять время, дольше самой записи на слабых компьютерах.</small><button class="go" id="go" type="button">Расшифровать</button></div>
+      <div class="dfoot hidden" id="rfoot"><button class="go" type="button" onclick="location.reload()">Попробовать снова</button></div>
+    </div>
+  </div>
+
+  <div class="lib hidden" id="lib">
+    <h2>Прошлые расшифровки</h2>
+    <input type="search" id="lq" placeholder="Найти по названию, тексту или заметкам" aria-label="Поиск по библиотеке">
+    <ul class="items" id="items"></ul>
+  </div>
+</section>
+
+<section id="result" class="hidden">
+  <div class="rhead"><h2 id="rname"></h2><p id="rstat"></p></div>
+  <div class="muted" id="rdate"></div>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tabTrBtn" aria-selected="true"><svg class="ico"><use href="#i-doc"/></svg>Расшифровка</button>
+    <button class="tab" role="tab" id="tabAiBtn" aria-selected="false"><svg class="ico"><use href="#i-spark"/></svg>AI-анализ <span class="badge hidden" id="abadge"></span></button>
+  </div>
+  <div id="tabTr">
+  <div class="tools">
+    <input type="search" id="q" placeholder="Найти в тексте" aria-label="Поиск по тексту">
+    <button class="btn" id="copy"><svg class="ico"><use href="#i-copy"/></svg><span>Копировать</span></button>
+    <a class="btn" id="dlTxt"><svg class="ico"><use href="#i-dl"/></svg>Скачать .txt</a>
+    <a class="btn" id="dlJson"><svg class="ico"><use href="#i-json"/></svg>Скачать JSON</a>
+    <button class="btn" id="rename"><svg class="ico"><use href="#i-edit"/></svg>Переименовать</button>
+  </div>
+  <div class="who hidden" id="who"></div>
+  <ol class="turns" id="turns"></ol>
+
+  <div class="panel" id="notesPanel">
+    <h3>Заметки</h3>
+    <div class="nform">
+      <textarea id="ntext" placeholder="Заметка к этой расшифровке (дата и время сохранятся автоматически)" aria-label="Текст заметки"></textarea>
+      <input id="ntc" placeholder="Таймкод" aria-label="Таймкод (необязательно)" title="Необязательно. Нажмите на таймкод реплики, чтобы подставить">
+      <button class="btn" id="nadd">Добавить</button>
+    </div>
+    <div id="notes"></div>
+  </div>
+
+  </div>
+
+  <div id="tabAi" class="hidden">
+  <div id="analysisPanel">
+    <div class="aihero"><div class="orb"><svg class="ico"><use href="#i-spark"/></svg></div><div>
+      <h3>Разбор интервью с помощью AI</h3>
+      <p>AI прочитает расшифровку и подготовит структурированный разбор по вашему промпту. Если в записи есть экран, он сам найдёт практические задания (код, SQL, схемы), посмотрит на кадры экрана, сопоставит их с голосом и включит разбор каждого задания в общий отчёт. Это занимает несколько минут, результат сохранится в истории.</p></div></div>
+    <div class="step"><span class="lbl">1. Чем анализировать</span>
+      <div class="pcards" id="aprov"></div></div>
+    <div class="step"><span class="lbl">2. Роль кандидата<span class="hint">необязательно</span></span>
+      <input type="hidden" id="arole" value="">
+      <div class="rpick">
+        <div class="rlist-wrap">
+          <label class="rsearch"><svg class="ico"><use href="#i-search"/></svg><input id="rsearch" placeholder="Найти роль" aria-label="Поиск роли" autocomplete="off"></label>
+          <div class="rlist" id="rcards" role="radiogroup" aria-label="Роль"></div>
+        </div>
+        <aside class="rview" id="rview" aria-live="polite"></aside>
+      </div></div>
+    <div class="step"><span class="lbl">3. Модель<span class="hint">необязательно</span></span>
+      <div class="mcards" id="mcards" role="radiogroup" aria-label="Модель"></div>
+      <input id="amodel" class="model-input hidden" placeholder="Название модели, например gpt-5" aria-label="Название модели" autocomplete="off"></div>
+    <div class="runrow"><button class="go big" id="arun"><svg class="ico"><use href="#i-spark"/></svg>Проанализировать</button>
+      <span class="muted">Используется <code>prompts/analyze-interview.md</code> и ваша подписка в установленном CLI.</span></div>
+    <div id="astat" class="muted"></div>
+    <div class="aiprog hidden" id="aprog"><i></i></div>
+    <div class="muted" id="apct"></div>
+    <div id="aout" class="hidden aires">
+      <div class="arow"><button class="btn" id="acopy"><svg class="ico"><use href="#i-copy"/></svg><span>Копировать</span></button><a class="btn" id="adl"><svg class="ico"><use href="#i-dl"/></svg>Скачать .md</a></div>
+      <div class="rep" id="rtop">
+        <aside class="rside" id="rside">
+          <input type="search" id="rq" placeholder="Поиск по разбору" aria-label="Поиск по разбору">
+          <nav class="rlist" id="rlist" aria-label="Разделы разбора"></nav>
+        </aside>
+        <div class="rmain"><div class="md" id="amd"></div><div class="rpager" id="rpager"></div></div>
+      </div>
+    </div>
+    <div class="hist hidden" id="hist"><h4>Прошлые разборы</h4><div id="ahist" class="arow"></div></div>
+  </div>
+  </div>
+</section>
+</main>
+<script type="module" src="/static/js/main.js"></script>
+</body></html>

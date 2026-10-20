@@ -1,0 +1,39 @@
+:root{
+  --paper:#ECEFE9;--ink:#173A33;--muted:#5C6F68;--line:#C9D0C7;--wash:#E1E6DF;
+  --play:#3A34E6;--amber:#B5530B;--teal:#0B7A6B;--err:#B3261E;--on-play:#fff;
+  --ui:"Schibsted Grotesk",system-ui,-apple-system,sans-serif;--read:"Literata",Georgia,serif;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){
+  --paper:#111816;--ink:#E4E9E2;--muted:#93A39C;--line:#2B3733;--wash:#1A2421;
+  --play:#8D88FF;--amber:#E8975A;--teal:#4FC4B0;--err:#FF8A80;--on-play:#111816}}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;color:var(--ink);font:16px/1.5 var(--ui);-webkit-font-smoothing:antialiased}
+main{max-width:1040px;margin:0 auto;padding:28px 16px 96px}
+.mark{font-weight:800;letter-spacing:-.01em;font-size:15px}
+h1{font-size:clamp(28px,5vw,40px);line-height:1.08;letter-spacing:-.03em;font-weight:800;margin:32px 0 8px}
+.lead{color:var(--muted);margin:0 0 24px;max-width:36em}
+:focus-visible{outline:2px solid var(--play);outline-offset:3px;border-radius:4px}
+.hidden{display:none!important}
+
+button.go,.btn{font:inherit;font-weight:600;border-radius:8px;cursor:pointer;padding:11px 22px;border:1px solid transparent;text-decoration:none;display:inline-block}
+button.go{background:var(--play);color:var(--on-play)}
+button.go:disabled{opacity:.35;cursor:not-allowed}
+.btn{background:transparent;color:var(--ink);border-color:var(--line);padding:8px 16px;font-size:15px;font-weight:500}
+.btn:hover{background:var(--wash)}
+
+/* --- icons --- */
+.ico{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px}
+.btn,button.go{display:inline-flex;align-items:center;gap:8px}
+.btn .ico{color:var(--muted)}.btn:hover .ico{color:var(--play)}
+
+details{margin-top:20px;color:var(--muted)}summary{cursor:pointer;font-size:14px}
+
+.muted{color:var(--muted);font-size:14px}.err{color:var(--err)}
+
+@media(max-width:640px){
+  main{padding:24px 12px 64px}h1{margin-top:36px}
+}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.mark{color:inherit;text-decoration:none}
